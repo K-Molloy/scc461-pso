@@ -71,9 +71,9 @@ impl JobConfig {
 
 impl fmt::Display for JobConfig {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Optimizer will search a {} variable space bounded by {} \n
+        write!(f, "Optimiser will search a {} variable space bounded by {} \n
             and velocities bounded by {} \n
-            Optimizer will run for {} itterations, unless the minimum cost drops below {} \n",
+            Optimiser will run for {} itterations, unless the minimum cost drops below {} \n",
             self.num_variables, 
             self.pos_bounds, 
             self.vel_bounds,

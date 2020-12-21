@@ -69,9 +69,9 @@ impl SwarmColaborative {
         self.global_record = Record::blank(job_config.num_variables);
 
         let mut no_new_record_count = 4;
-        let mut try_globalize_agian = false;
+        let mut try_globalise_agian = false;
 
-        self.initialize_particles(
+        self.initialise_particles(
             job_config.num_variables,
             &job_config.pos_bounds,
             &job_config.vel_bounds,
@@ -96,18 +96,18 @@ impl SwarmColaborative {
                 stoch,
             );
 
-            self.globalize(i, global_record_lock, &mut try_globalize_agian);
+            self.globalise(i, global_record_lock, &mut try_globalise_agian);
 
             self.update_console(i, &no_new_record_count);
 
             if self.global_record.get_cost() < job_config.exit_cost {
-                self.globalize(i, global_record_lock, &mut true);
+                self.globalise(i, global_record_lock, &mut true);
                 return;
             }
         }
     }
 
-    fn initialize_particles(
+    fn initialise_particles(
         &mut self,
         num_variables: usize,
         pos_bounds: &Bound,
@@ -176,7 +176,7 @@ impl SwarmColaborative {
         }
     }
 
-    fn globalize(
+    fn globalise(
         &mut self,
         itteration: usize,
         global_record_lock: &mut Arc<RwLock<Record>>,
@@ -255,7 +255,7 @@ impl SwarmIndependant {
 
         let mut no_new_record_count = 4;
 
-        self.initialize_particles(
+        self.initialise_particles(
             job_config.num_variables,
             &job_config.pos_bounds,
             &job_config.vel_bounds,
@@ -290,7 +290,7 @@ impl SwarmIndependant {
         self.record.clone()
     }
 
-    fn initialize_particles(
+    fn initialise_particles(
         &mut self,
         num_variables: usize,
         pos_bounds: &Bound,

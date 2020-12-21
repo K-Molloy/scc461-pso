@@ -1,7 +1,7 @@
-mod optimizer_config;
+mod optimiser_config;
 mod swarm;
 
-pub use optimizer_config::{JobConfig, PSOConfig};
+pub use optimiser_config::{JobConfig, PSOConfig};
 pub use swarm::{ParamDist, SwarmConfig, SwarmConfigDistribution};
 
 use rand::prelude::thread_rng;
@@ -16,27 +16,27 @@ pub struct PSO {
 impl PSO {
     pub fn new(config: PSOConfig) -> Self {
         if config.is_verbose {
-            println!("PSO initialized with {}", config)
+            println!("PSO initialised with {}", config)
         }
 
         PSO { config }
     }
 
-    pub fn minimize_collaborative<F>(&self, job_config: JobConfig, cost_func: F) -> (f64, Vec<f64>)
+    pub fn minimise_collaborative<F>(&self, job_config: JobConfig, cost_func: F) -> (f64, Vec<f64>)
     where
         F: Fn(&[f64]) -> f64 + Sync + Send + 'static,
     {
-        self.minimize(job_config, SwarmConfig::default_collab(), cost_func)
+        self.minimise(job_config, SwarmConfig::default_collab(), cost_func)
     }
 
-    pub fn minimize_independant<F>(&self, job_config: JobConfig, cost_func: F) -> (f64, Vec<f64>)
+    pub fn minimise_independant<F>(&self, job_config: JobConfig, cost_func: F) -> (f64, Vec<f64>)
     where
         F: Fn(&[f64]) -> f64 + Sync + Send + 'static,
     {
-        self.minimize(job_config, SwarmConfig::default_independant(), cost_func)
+        self.minimise(job_config, SwarmConfig::default_independant(), cost_func)
     }
 
-    pub fn minimize<F>(
+    pub fn minimise<F>(
         &self,
         job_config: JobConfig,
         swarm_config: SwarmConfig,
@@ -49,10 +49,10 @@ impl PSO {
             .into_iter()
             .map(|_| swarm_config.clone())
             .collect();
-        self.minimize_specific(job_config, swarm_configs, cost_func)
+        self.minimise_specific(job_config, swarm_configs, cost_func)
     }
 
-    pub fn minimize_distributed<F>(
+    pub fn minimise_distributed<F>(
         &self,
         job_config: JobConfig,
         swarm_config_dist: SwarmConfigDistribution,
@@ -66,10 +66,10 @@ impl PSO {
             .into_iter()
             .map(|_| swarm_config_dist.sample_configuration(&mut rng))
             .collect();
-        self.minimize_specific(job_config, swarm_configs, cost_func)
+        self.minimise_specific(job_config, swarm_configs, cost_func)
     }
 
-    pub fn minimize_specific<F>(
+    pub fn minimise_specific<F>(
         &self,
         job_config: JobConfig,
         swarm_configs: Vec<SwarmConfig>,
@@ -196,7 +196,7 @@ impl PSO {
         if self.config.num_threads == 1 {
             assert!(
                 !swarm_configs[0].is_collaborative(),
-                "Single-Swarm Optimization may not use a Collaborative Swarm Configuration!"
+                "Single-Swarm Optimisation may not use a Collaborative Swarm Configuration!"
             );
             if self.config.is_verbose {
                 println!("Swarm Configuration: \n \t {}", swarm_configs[0])
