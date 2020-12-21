@@ -8,7 +8,15 @@ description = "Small Generic Particle Swarm Optimiser"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[dependencies]
+
 [dependencies.rand]
 version = "0.7.3"
 
-[dependencies]
+[lib]
+name = "myrustlib"
+crate-type = ["dylib"]
+
+[dependencies.cpython]
+version = "0.1"
+features = ["extension-module"]

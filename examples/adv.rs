@@ -4,8 +4,8 @@
 
 // Using 4 collaborate swarms with fewer particles in each
 
-// A custom swam configuration is defined with motion coeffcienets and a record-sharing period
-// Fastest for lower single clock speed CPU cores (i.e AMD Ryzen)
+// A custom swarm configuration is defined with motion coeffcienets and a record-sharing period
+// Fastest for lower single core clock speed, high core count CPU (i.e AMD Ryzen 4th Gen)
 
 extern crate ps_optim;
 use ps_optim::{PSO, PSOConfig, JobConfig, SwarmConfigDistribution, ParamDist};
