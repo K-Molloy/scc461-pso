@@ -1,22 +1,26 @@
+
+use std::io;
 extern crate rand;
 
+
+// PSO Call
 mod optimiser;
 pub use optimiser::{JobConfig, PSOConfig, ParamDist, SwarmConfig, SwarmConfigDistribution, PSO};
 
-// use std::f64::consts::PI;
-
-// use std::time::{Duration, Instant};
-
-#[macro_use]
-
-
+// CPython Call
 extern crate cpython;
-extern crate ps_optim;
+use cpython::{PyResult, Python, py_module_initializer, py_fn};
 
-use cpython::{Python, PyResult};
-use ps_optim::{PSO, PSOConfig, JobConfig, SwarmConfigDistribution, ParamDist};
+// Python Connector - Module Initialiser
+py_module_initializer!(ps_optim, |py, m| {
+    m.add(py, "__doc__", "This module is implemented in Rust.")?;
+    m.add(py, "get_result", py_fn!(py, get_result(val: &str)))?;
+    m.add(py, "solve", py_fn!(py, solve()))?;
+    Ok(())
+});
 
-fn optimiser() {
+// PSO Solver
+fn solve(_py: Python) -> PyResult<(f64, Vec<f64>)> {
     let num_variables = 5;
 
     // Define a cost function to minimize:
@@ -75,7 +79,7 @@ fn optimiser() {
     // Minimize cost function:
 
     //use minimize_distributed to accept SwarmConfigDistribution
-    let min = pso.minimize_distributed(job_config, swarm_config, cost_function);
+    let min = pso.minimise_distributed(job_config, swarm_config, cost_function);
 
     println!("Minimum of: {}, With value: {:?}", min.0, min.1);
 
@@ -83,7 +87,7 @@ fn optimiser() {
 
 }
 
-py_module_initialiser!(libps_optim, initlibps_optim, PyInit_ps_optim, |py, m|{
-    try!(m.add(py, "__doc__", "This module is implemented in rust! :)"));
-    try!(m.add(py, "optimiser", py_fn!(py, optimiser())))
-})
+// Test Python Function
+fn get_result(_py: Python, val: &str) -> PyResult<String> {
+    Ok("Rust says: ".to_owned() + val)
+}

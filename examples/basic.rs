@@ -8,7 +8,7 @@
 // Search Space Bounds and Max Velocities still must be defined in JobConfig
 // Fastest for higher single clock speed CPU cores (i.e Intel i7 10th gen)
 
-extern crate ps_optim;
+//extern crate ps_optim;
 use ps_optim::{PSO, PSOConfig, JobConfig};
 
 fn main() {
